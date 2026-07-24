@@ -9,9 +9,15 @@ import type { Actor } from "../../../services/tmdb/tmdbService";
 
 type Props = {
   label: string;
+  value: Actor | null;
+  onChange: (actor: Actor | null) => void;
 };
 
-export default function ActorSearch({ label }: Props) {
+export default function ActorSearch({
+    label,
+    value,
+    onChange,
+  }: Props) {
   const [query, setQuery] = useState("");
   const [options, setOptions] = useState<Actor[]>([]);
   const [loading, setLoading] = useState(false);
@@ -39,9 +45,11 @@ export default function ActorSearch({ label }: Props) {
   return (
     <Autocomplete
       options={options}
+      value={value}
       getOptionLabel={(option) => option.name}
       loading={loading}
       onInputChange={(_, value) => setQuery(value)}
+      onChange={(_, actor) => onChange(actor)}
       renderInput={(params) => (
       <TextField
           {...params}
