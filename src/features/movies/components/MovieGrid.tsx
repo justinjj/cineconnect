@@ -23,7 +23,11 @@ export default function MovieGrid({
 
     if (loading) {
       return (
-          <Grid container spacing={3}>
+          <Grid 
+            container
+            spacing={3}
+            sx={{ mt: 2 }}
+          >
               {Array.from({ length: 6 }).map((_, index) => (
                   <Grid
                       key={index}
@@ -37,10 +41,12 @@ export default function MovieGrid({
     }
     
     return (
-      <Box
-          py={8}
-          textAlign="center"
-      >
+        <Box
+          sx={{
+            py: 8,
+            textAlign: "center",
+          }}
+        >
           <Typography variant="h5">
               🍿 No common movies found
           </Typography>
@@ -53,7 +59,11 @@ export default function MovieGrid({
   }
 
   return (
-    <Grid container spacing={3} mt={2}>
+    <Grid 
+      container
+      spacing={3}
+      sx={{ mt: 2 }}
+    >
       {movies.map((movie) => (
         <Grid
           key={movie.id}

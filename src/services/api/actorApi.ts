@@ -1,6 +1,7 @@
 import { client } from "./client";
+import type { Actor } from "../../features/actor-search/types";
 
-export async function searchActors(query: string) {
+export async function searchActors(query: string): Promise<Actor[]> {
   const { data, errors } = await client.queries.searchActors({
     query,
   });
@@ -9,5 +10,19 @@ export async function searchActors(query: string) {
     throw new Error(errors[0].message);
   }
 
-  return data ?? [];
+  const actors = (data ?? []).filter(
+    (
+      actor
+    ): actor is {
+      id: number;
+      name: string;
+      profileImage?: string | null;
+    } => actor.id !== undefined && actor.name !== undefined
+  );
+
+  return actors.map((actor) => ({
+    id: actor.id,
+    name: actor.name,
+    profileImage: actor.profileImage ?? null,
+  }));
 }

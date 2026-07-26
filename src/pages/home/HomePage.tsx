@@ -8,11 +8,12 @@ import {
 } from "@mui/material";
 
 import { useState } from "react";
-import type { Actor } from "../../services/tmdb/tmdbService";
+import type { Actor } from "../../features/actor-search/types";
 import ActorSearch from "../../features/actor-search/components/ActorSearch";
 import MovieGrid from "../../features/movies/components/MovieGrid";
 
-import { getCommonMovies, type Movie } from "../../services/api/movieApi"; // We'll create this type shortly
+import { getCommonMovies } from "../../services/api/movieApi";
+import type { Movie } from "../../features/movies/types";
 
 export default function HomePage() {
 
@@ -21,7 +22,6 @@ export default function HomePage() {
 
   const [movies, setMovies] = useState<Movie[]>([]);
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
   const [hasSearched, setHasSearched] = useState(false);
 
   const handleSearch = async () => {
@@ -34,7 +34,6 @@ export default function HomePage() {
 
     try {
       setLoading(true);
-      setError(null);
 
       const result = await getCommonMovies([
         actorOne.id,
@@ -45,9 +44,7 @@ export default function HomePage() {
 
       setMovies(result);
     } catch (err) {
-      setError(
-        err instanceof Error ? err.message : "Something went wrong"
-      );
+      console.log(err);
     } finally {
       setLoading(false);
     }
@@ -67,7 +64,11 @@ export default function HomePage() {
             },
         }}
       >
-        <Typography variant="h3" textAlign="center" gutterBottom>
+        <Typography 
+          variant="h3"
+          gutterBottom
+          sx={{ textAlign: "center" }}
+        >
           CineConnect 🎬
         </Typography>
 
@@ -88,7 +89,7 @@ export default function HomePage() {
             onChange={setActorTwo}
           />
 
-          <Box textAlign="center">
+          <Box sx={{ textAlign: "center" }}>
             <Button
               variant="contained"
               size="large"
@@ -108,7 +109,7 @@ export default function HomePage() {
             </Typography>
           )}
 
-          <Box mt={2}>
+          <Box sx={{ mt: 2 }}>
             <MovieGrid movies={movies} loading={loading} hasSearched={hasSearched} />
           </Box>
         </Stack>

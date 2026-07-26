@@ -5,7 +5,7 @@ import {
 } from "@mui/material";
 
 import { searchActors } from "../../../services/api/actorApi";
-import type { Actor } from "../../../services/tmdb/tmdbService";
+import type { Actor } from "../types";
 
 type Props = {
   label: string;
