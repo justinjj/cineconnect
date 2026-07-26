@@ -24,6 +24,7 @@ export async function searchActors(
   );
 
   console.log("TMDB key exists:", !!env.TMDB_API_KEY);
+  console.log("TMDB key:", JSON.stringify(env.TMDB_API_KEY));
   console.log("TMDB key length:", env.TMDB_API_KEY?.length);
 
   if (!response.ok) {
