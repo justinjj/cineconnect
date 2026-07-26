@@ -13,7 +13,16 @@ type Props = {
 
 export default function MovieCard({ movie }: Props) {
   return (
-    <Card sx={{ height: "100%" }}>
+    <Card 
+      sx={{
+        height: "100%",
+        transition: "0.2s",
+        "&:hover": {
+          transform: "translateY(-4px)",
+          boxShadow: 6,
+        },
+      }}
+    >
       <CardMedia
         component="img"
         height="360"

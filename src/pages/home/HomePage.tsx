@@ -22,8 +22,12 @@ export default function HomePage() {
   const [movies, setMovies] = useState<Movie[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [hasSearched, setHasSearched] = useState(false);
 
   const handleSearch = async () => {
+
+    setHasSearched(true);
+    
     if (!actorOne || !actorTwo) {
       return;
     }
@@ -51,12 +55,23 @@ export default function HomePage() {
   
   return (
     <Container maxWidth="md">
-      <Paper elevation={0} sx={{ p: 4, mt: 8 }}>
-        <Typography variant="h3" gutterBottom>
+      <Paper elevation={0} 
+        sx={{
+            p:{
+                xs:2,
+                md:4,
+            },
+            mt:{
+                xs:2,
+                md:8,
+            },
+        }}
+      >
+        <Typography variant="h3" textAlign="center" gutterBottom>
           CineConnect 🎬
         </Typography>
 
-        <Typography color="text.secondary" mb={4}>
+        <Typography color="text.secondary">
           Find movies where two actors appeared together.
         </Typography>
 
@@ -73,19 +88,28 @@ export default function HomePage() {
             onChange={setActorTwo}
           />
 
-          <Box>
+          <Box textAlign="center">
             <Button
               variant="contained"
               size="large"
               onClick={handleSearch}
               disabled={!actorOne || !actorTwo || loading}
             >
-              {loading ? "Searching..." : "Find Common Movies"}
+              {loading ? "Searching..." : "🎬 Find Common Movies"}
             </Button>
           </Box>
 
+          {hasSearched && movies.length > 0 && (
+            <Typography
+              variant="h5"
+              sx={{ mt: 4, mb: 2 }}
+            >
+              Results ({movies.length})
+            </Typography>
+          )}
+
           <Box mt={2}>
-            <MovieGrid movies={movies} />
+            <MovieGrid movies={movies} loading={loading} hasSearched={hasSearched} />
           </Box>
         </Stack>
       </Paper>
