@@ -23,7 +23,14 @@ export async function searchActors(
     `https://api.themoviedb.org/3/search/person?query=${encodeURIComponent(query)}&api_key=${env.TMDB_API_KEY}`
   );
 
+  console.log("TMDB key exists:", !!env.TMDB_API_KEY);
+  console.log("TMDB key length:", env.TMDB_API_KEY?.length);
+
   if (!response.ok) {
+    const body = await response.text();
+    console.error("TMDB status:", response.status);
+    console.error("TMDB response:", body);
+
     throw new Error(`TMDB Error: ${response.status}`);
   }
 
