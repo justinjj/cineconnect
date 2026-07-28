@@ -40,8 +40,6 @@ export default function HomePage() {
         actorTwo.id,
       ]);
 
-      console.log(result);
-
       setMovies(result);
     } catch (err) {
       console.log(err);
