@@ -1,6 +1,6 @@
-import { MovieCredit } from "./types";
+import { MovieCredit, MovieSummary } from "./types";
 
-export function mapMovie(movie: MovieCredit) {
+export function mapMovie(movie: MovieCredit): MovieSummary {
   return {
     id: movie.id,
     title: movie.title,
