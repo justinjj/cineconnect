@@ -1,10 +1,6 @@
 import { env } from "$amplify/env/searchActors";
 
-export interface ActorSummary {
-  id: number;
-  name: string;
-  profileImage: string | null;
-}
+import type { ActorSummary } from "./types";
 
 interface TMDBPerson {
   id: number;
@@ -22,10 +18,6 @@ export async function searchActors(
   const response = await fetch(
     `https://api.themoviedb.org/3/search/person?query=${encodeURIComponent(query)}&api_key=${env.TMDB_API_KEY}`
   );
-
-  console.log("TMDB key exists:", !!env.TMDB_API_KEY);
-  console.log("TMDB key:", JSON.stringify(env.TMDB_API_KEY));
-  console.log("TMDB key length:", env.TMDB_API_KEY?.length);
 
   if (!response.ok) {
     const body = await response.text();
