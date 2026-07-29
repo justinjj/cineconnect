@@ -1,4 +1,5 @@
 import { client } from "./client";
+import { analytics } from "../../analytics/analyticsService";
 import type { Actor } from "../../features/actor-search/types";
 
 export async function searchActors(query: string): Promise<Actor[]> {
@@ -20,9 +21,13 @@ export async function searchActors(query: string): Promise<Actor[]> {
     } => actor.id !== undefined && actor.name !== undefined
   );
 
-  return actors.map((actor) => ({
+  const result = actors.map((actor) => ({
     id: actor.id,
     name: actor.name,
     profileImage: actor.profileImage ?? null,
   }));
+
+  analytics.trackActorSearch(query, result.length);
+
+  return result;
 }

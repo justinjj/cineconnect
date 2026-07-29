@@ -70,7 +70,9 @@ export default function HomePage() {
           CineConnect 🎬
         </Typography>
 
-        <Typography color="text.secondary">
+        <Typography 
+          color="text.secondary"
+          sx={{ marginBottom: "10px" }}>
           Find movies where two actors appeared together.
         </Typography>
 
@@ -89,7 +91,7 @@ export default function HomePage() {
 
           <Box sx={{ textAlign: "center" }}>
             <Button
-              variant="contained"
+              variant="outlined"
               size="large"
               onClick={handleSearch}
               disabled={!actorOne || !actorTwo || loading}
