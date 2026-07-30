@@ -24,12 +24,19 @@ const schema = a.schema({
     .query()
     .arguments({
       actorIds: a.integer().array().required(),
+      actors: a.ref("ActorInput").array().required(),
     })
     .returns(a.ref("Movie").array())
     .authorization((allow) => [
       allow.publicApiKey(),
     ])
     .handler(a.handler.function(commonMovies)),
+
+  ActorInput: a.customType({
+    id: a.integer().required(),
+    name: a.string().required(),
+    profileImage: a.string(),
+  }),  
 
   Movie: a.customType({
     id: a.integer().required(),
