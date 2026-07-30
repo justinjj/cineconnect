@@ -3,8 +3,10 @@ import { auth } from './auth/resource';
 import { data } from './data/resource';
 import { searchActors } from "./functions/searchActors/resource";
 import { commonMovies } from "./functions/commonMovies/resource";
+import { trendingComparisons } from "./functions/trendingComparisons/resource";
 import { CacheResources } from "./custom/cache/resource";
 import { TrendResources } from "./custom/trend/resource";
+
 
 /**
  * @see https://docs.amplify.aws/react/build-a-backend/ to add storage, functions, and more
@@ -14,6 +16,7 @@ const backend = defineBackend({
   data,
   searchActors,
   commonMovies,
+  trendingComparisons,
 });
 
 const cache = new CacheResources(
@@ -44,6 +47,15 @@ trend.table.grantReadWriteData(
 );
 
 backend.commonMovies.addEnvironment(
+  "TREND_TABLE_NAME",
+  trend.table.tableName
+);
+
+trend.table.grantReadData(
+  backend.trendingComparisons.resources.lambda
+);
+
+backend.trendingComparisons.addEnvironment(
   "TREND_TABLE_NAME",
   trend.table.tableName
 );

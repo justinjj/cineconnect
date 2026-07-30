@@ -22,7 +22,7 @@ export const handler: Schema["commonMovies"]["functionHandler"] =
       .map(actor => ({
         id: actor.id,
         name: actor.name,
-        image: actor.profileImage ?? undefined,
+        image: actor.image ?? undefined,
       }));
 
     const recordTrend = async () => {

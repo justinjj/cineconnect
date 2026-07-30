@@ -39,11 +39,9 @@ export class TrendRepository {
       (a, b) => a.id - b.id
     );
 
-    const [first, second] = sortedActors;
-
     const comparisonKey = buildComparisonKey(
-      first.id,
-      second.id
+      sortedActors[0].id,
+      sortedActors[1].id
     );
 
     const now = new Date().toISOString();
@@ -57,7 +55,7 @@ export class TrendRepository {
         },
 
         UpdateExpression: `
-          ADD comparisonCount :increment
+          ADD searchCount :increment
           SET
             lastSearched = :lastSearched,
             actors = if_not_exists(actors, :actors)
