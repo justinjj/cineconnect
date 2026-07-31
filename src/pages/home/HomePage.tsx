@@ -14,6 +14,8 @@ import MovieGrid from "../../features/movies/components/MovieGrid";
 
 import { getCommonMovies } from "../../services/api/movieApi";
 import type { Movie } from "../../features/movies/types";
+import { TrendingPairs } from "../../features/trending/components/TrendingPairs";
+import type { ComparisonTrend } from "../../features/trending/types";
 
 export default function HomePage() {
 
@@ -24,11 +26,13 @@ export default function HomePage() {
   const [loading, setLoading] = useState(false);
   const [hasSearched, setHasSearched] = useState(false);
 
-  const handleSearch = async () => {
-
+  const handleSearch = async (
+    firstActor: Actor | null = actorOne,
+    secondActor: Actor | null = actorTwo
+  ) => {
     setHasSearched(true);
-    
-    if (!actorOne || !actorTwo) {
+
+    if (!firstActor || !secondActor) {
       return;
     }
 
@@ -36,17 +40,30 @@ export default function HomePage() {
       setLoading(true);
 
       const result = await getCommonMovies([
-        actorOne.id,
-        actorTwo.id,
+        firstActor,
+        secondActor,
       ]);
 
       setMovies(result);
     } catch (err) {
-      console.log(err);
+      console.error(err);
     } finally {
       setLoading(false);
     }
   };
+
+  const handleTrendingPair = async (trend: ComparisonTrend) => {
+    if (trend.actors.length !== 2) {
+      return;
+    }
+
+    const [firstActor, secondActor] = trend.actors;
+
+    setActorOne(firstActor);
+    setActorTwo(secondActor);
+
+    await handleSearch(firstActor, secondActor);
+  };  
   
   return (
     <Container maxWidth="md">
@@ -93,12 +110,16 @@ export default function HomePage() {
             <Button
               variant="outlined"
               size="large"
-              onClick={handleSearch}
+              onClick={() => handleSearch()}
               disabled={!actorOne || !actorTwo || loading}
             >
               {loading ? "Searching..." : "🎬 Find Common Movies"}
             </Button>
           </Box>
+
+          <TrendingPairs
+            onSelect={handleTrendingPair}
+          />
 
           {hasSearched && movies.length > 0 && (
             <Typography

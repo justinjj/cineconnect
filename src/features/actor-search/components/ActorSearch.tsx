@@ -47,6 +47,7 @@ export default function ActorSearch({
       options={options}
       value={value}
       getOptionLabel={(option) => option.name}
+      getOptionKey={(option) => option.id} 
       loading={loading}
       onInputChange={(_, value) => setQuery(value)}
       onChange={(_, actor) => onChange(actor)}

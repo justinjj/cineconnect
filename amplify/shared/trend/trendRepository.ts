@@ -16,7 +16,11 @@ export class TrendRepository {
   constructor() {
     const dynamoClient = new DynamoDBClient({});
 
-    this.client = DynamoDBDocumentClient.from(dynamoClient);
+    this.client = DynamoDBDocumentClient.from(dynamoClient, {
+      marshallOptions: {
+        removeUndefinedValues: true,
+      },
+    });
 
     const tableName = process.env.TREND_TABLE_NAME;
 
@@ -35,9 +39,13 @@ export class TrendRepository {
       throw new Error("At least two actors are required.");
     }
 
-    const sortedActors = [...actors].sort(
-      (a, b) => a.id - b.id
-    );
+    const sortedActors = [...actors]
+      .map(actor => ({
+        id: actor.id,
+        name: actor.name,
+        image: actor.image ?? null,
+      }))
+      .sort((a, b) => a.id - b.id);
 
     const comparisonKey = buildComparisonKey(
       sortedActors[0].id,

@@ -17,14 +17,14 @@ export async function searchActors(query: string): Promise<Actor[]> {
     ): actor is {
       id: number;
       name: string;
-      profileImage?: string | null;
+      image?: string | null;
     } => actor.id !== undefined && actor.name !== undefined
   );
 
   const result = actors.map((actor) => ({
     id: actor.id,
     name: actor.name,
-    profileImage: actor.profileImage ?? null,
+    profileImage: actor.image ?? null,
   }));
 
   analytics.trackActorSearch(query, result.length);
