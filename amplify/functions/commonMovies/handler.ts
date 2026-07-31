@@ -40,7 +40,9 @@ export const handler: Schema["commonMovies"]["functionHandler"] =
     if (cachedMovies) {
       console.log("Movie Cache hit:", cacheKey);
 
-      await recordTrend();
+      if (cachedMovies.length > 0) {
+        await recordTrend();
+      }
 
       return cachedMovies;
     }
