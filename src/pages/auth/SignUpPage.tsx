@@ -1,5 +1,12 @@
 import { useState } from "react";
-import { Button, Stack, TextField, Typography } from '@mui/material';
+import {
+  Button,
+  Container,
+  Paper,
+  Stack,
+  TextField,
+  Typography,
+} from "@mui/material";
 import { confirmUserSignUp, registerUser } from "../../services/auth/authService";
 
 export default function SignUpPage() {
@@ -39,57 +46,109 @@ export default function SignUpPage() {
 
   if (isConfirmationRequired) {
     return (
-      <Stack spacing={2}>
-        <Typography variant="h4">
-          Verify your email
-        </Typography>
+      <Container maxWidth="sm">
+          <Paper
+            elevation={2}
+            sx={{
+              p: {
+                xs: 3,
+                sm: 5,
+              },
+              mt: {
+                xs: 4,
+                md: 10,
+              },
+            }}
+          >
+            <Stack spacing={2}>
+              <Typography variant="h4">
+                Verify your email
+              </Typography>
 
-        <Typography color="text.secondary">
-          Enter the verification code sent to your email.
-        </Typography>
+              <Typography color="text.secondary">
+                Enter the verification code sent to your email.
+              </Typography>
 
-        <TextField
-          label="Verification Code"
-          value={confirmationCode}
-          onChange={(event) => setConfirmationCode(event.target.value)}
-        />
+              <TextField
+                label="Verification Code"
+                value={confirmationCode}
+                onChange={(event) => setConfirmationCode(event.target.value)}
+              />
 
-        <Button
-          variant="contained"
-          onClick={handleConfirmSignUp}
-          disabled={!confirmationCode}>
-          Verify Email
-        </Button>
-      </Stack>
+              <Button
+                variant="contained"
+                onClick={handleConfirmSignUp}
+                disabled={!confirmationCode}>
+                Verify Email
+              </Button>
+            </Stack>
+          </Paper>
+        </Container>
+
     )
   }
 
   return (
-    <Stack spacing={2}>
-      <Typography variant="h4">
-        Create Account
-      </Typography>
+    <Container maxWidth="sm">
+      <Paper
+        elevation={2}
+        sx={{
+          p: {
+            xs: 3,
+            sm: 5,
+          },
+          mt: {
+            xs: 4,
+            md: 10,
+          },
+        }}
+      >
+        <Stack spacing={3}>
+          <Typography
+            variant="h4"
+            sx={{ textAlign: "center" }}
+          >
+            Create Account
+          </Typography>
 
-      <TextField
-        label="Email"
-        type="email"
-        value={email}
-        onChange={(event) => setEmail(event.target.value)}
-      />
+          <Typography
+            color="text.secondary"
+            sx={{ textAlign: "center" }}
+          >
+            Join CineConnect and keep track of your
+            favourite comparisons.
+          </Typography>
 
-      <TextField
-        label="Password"
-        type="password"
-        value={password}
-        onChange={(event) => setPassword(event.target.value)}
-      />
+          <TextField
+            label="Email"
+            type="email"
+            value={email}
+            onChange={(event) =>
+              setEmail(event.target.value)
+            }
+            fullWidth
+          />
 
-      <Button 
-        variant="contained"
-        onClick={handleSignUp}
-        >
-          Sign Up
-      </Button>
-    </Stack>
-  )
+          <TextField
+            label="Password"
+            type="password"
+            value={password}
+            onChange={(event) =>
+              setPassword(event.target.value)
+            }
+            fullWidth
+          />
+
+          <Button
+            variant="contained"
+            size="large"
+            onClick={handleSignUp}
+            disabled={!email || !password}
+          >
+            Sign Up
+          </Button>
+        </Stack>
+      </Paper>
+    </Container>
+  );
 }
