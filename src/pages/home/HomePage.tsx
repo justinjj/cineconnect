@@ -17,6 +17,8 @@ import type { Movie } from "../../features/movies/types";
 import { TrendingPairs } from "../../features/trending/components/TrendingPairs";
 import type { ComparisonTrend } from "../../features/trending/types";
 
+import { useAuth } from "../../hooks/useAuth"; 
+
 export default function HomePage() {
 
   const [actorOne, setActorOne] = useState<Actor | null>(null);
@@ -25,6 +27,20 @@ export default function HomePage() {
   const [movies, setMovies] = useState<Movie[]>([]);
   const [loading, setLoading] = useState(false);
   const [hasSearched, setHasSearched] = useState(false);
+
+
+  const {
+    user,
+    isAuthenticated,
+    loading: authLoading,
+    logout,
+  } = useAuth();
+
+  console.log("Auth state:", {
+    user,
+    isAuthenticated,
+    authLoading
+  })
 
   const handleSearch = async (
     firstActor: Actor | null = actorOne,
@@ -79,12 +95,21 @@ export default function HomePage() {
             },
         }}
       >
+        {isAuthenticated && (
+          <Button
+            variant="outlined"
+            onClick={logout}
+          >
+            Logout
+          </Button>
+        )}
+
         <Typography 
           variant="h3"
           gutterBottom
           sx={{ textAlign: "center" }}
         >
-          CineConnect 🎬
+          MovieConnect 🎬
         </Typography>
 
         <Typography 
