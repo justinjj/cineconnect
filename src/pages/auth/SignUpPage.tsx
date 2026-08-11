@@ -8,12 +8,16 @@ import {
   Typography,
 } from "@mui/material";
 import { confirmUserSignUp, registerUser } from "../../services/auth/authService";
+import { useNavigate } from "react-router-dom";
 
 export default function SignUpPage() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmationCode, setConfirmationCode] = useState("");
+  const [isConfirmed, setIsConfirmed] = useState(false);
   const [isConfirmationRequired, setIsConfirmationRequired] = useState(false);
+
+  const navigate = useNavigate();
 
   const handleSignUp = async () => {
     try {
@@ -39,10 +43,58 @@ export default function SignUpPage() {
       );
 
       console.log("Confirmation result:", result);
+
+      if (result.isSignUpComplete) {
+        setIsConfirmed(true);
+      }
     } catch(error) {
       console.error("Confirmation failed", error)
     }
   }
+
+  if (isConfirmed) {
+    return (
+      <Container maxWidth="sm">
+        <Paper
+          elevation={2}
+          sx={{
+            p: {
+              xs: 3,
+              sm: 5,
+            },
+            mt: {
+              xs: 4,
+              md: 10,
+            },
+            textAlign: "center",
+          }}
+        >
+          <Stack spacing={3} alignItems="center">
+            <Typography variant="h3">
+              🎉
+            </Typography>
+
+            <Typography variant="h4">
+              Email Verified!
+            </Typography>
+
+            <Typography color="text.secondary">
+              Your CineConnect account has been
+              successfully created and verified.
+            </Typography>
+
+            <Button
+              variant="contained"
+              size="large"
+              onClick={() => navigate("/login")}
+            >
+              Continue to Login
+            </Button>
+          </Stack>
+        </Paper>
+      </Container>
+    );
+  }  
 
   if (isConfirmationRequired) {
     return (

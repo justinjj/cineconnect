@@ -1,11 +1,15 @@
 import { useState } from "react";
 import { Button, Container, Paper, Stack, TextField, Typography } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 
-import { getAuthenticatedUser, getCurrentAuthSession, loginUser, logoutUser } from "../../services/auth/authService";
+import { getAuthenticatedUser, getCurrentAuthSession, loginUser } from "../../services/auth/authService";
+
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+
+  const navigate = useNavigate();
 
   const handleLogin = async () => {
     try {
@@ -14,12 +18,9 @@ export default function LoginPage() {
       console.log("Login result:", result);
 
       if (result.isSignedIn) {
-        const user = await getAuthenticatedUser();
-        const session = await getCurrentAuthSession();
-
-        console.log("Current user:", user);
-        console.log("Auth session:", session);
+        navigate("/");
       }
+
     } catch(error) {
       console.error("Login failed:", error);
     }
