@@ -69,7 +69,14 @@ export default function SignUpPage() {
             textAlign: "center",
           }}
         >
-          <Stack spacing={3} alignItems="center">
+          <Stack 
+            sx={{
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              gap: 3, // MUI theme spacing unit, same as spacing={3}
+            }}
+          >
             <Typography variant="h3">
               🎉
             </Typography>
