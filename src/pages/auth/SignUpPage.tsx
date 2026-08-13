@@ -13,6 +13,7 @@ import { useNavigate } from "react-router-dom";
 export default function SignUpPage() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [name, setName] = useState("");
   const [confirmationCode, setConfirmationCode] = useState("");
   const [isConfirmed, setIsConfirmed] = useState(false);
   const [isConfirmationRequired, setIsConfirmationRequired] = useState(false);
@@ -21,7 +22,7 @@ export default function SignUpPage() {
 
   const handleSignUp = async () => {
     try {
-        const result = await registerUser(email, password);
+        const result = await registerUser(name, email, password);
 
         console.log("Sign up result:", result);
 
@@ -195,6 +196,13 @@ export default function SignUpPage() {
             onChange={(event) =>
               setPassword(event.target.value)
             }
+            fullWidth
+          />
+
+          <TextField
+            label="Name"
+            value={name}
+            onChange={(event) => setName(event.target.value)}
             fullWidth
           />
 

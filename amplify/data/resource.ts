@@ -2,11 +2,13 @@ import { type ClientSchema, a, defineData } from "@aws-amplify/backend";
 import { actorSchema } from "./schema/actor";
 import { movieSchema } from "./schema/movies";
 import { trendingSchema } from "./schema/trending";
+import { userSchema } from "./schema/user";
 
 const schema = a.schema({
   ...actorSchema,
   ...movieSchema,
-  ...trendingSchema
+  ...trendingSchema,
+  ...userSchema,
 });
 
 export type Schema = ClientSchema<typeof schema>;

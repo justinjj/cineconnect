@@ -1,12 +1,27 @@
-import { signUp, confirmSignUp, signIn, getCurrentUser, fetchAuthSession, signOut } from "aws-amplify/auth";
+import { 
+  signUp, 
+  confirmSignUp, 
+  signIn, 
+  getCurrentUser, 
+  fetchAuthSession, 
+  signOut,
+  fetchUserAttributes,
+} from "aws-amplify/auth";
 
 export async function registerUser(
+  name: string,
   email: string,
   password: string
 ) {
   return signUp({
     username: email,
     password,
+    options: {
+      userAttributes: {
+        name,
+        email,
+      }
+    }
   })
 }
 
@@ -42,4 +57,7 @@ export async function logoutUser() {
   return signOut();
 }
 
+export async function getCurrentUserAttributes() {
+  return fetchUserAttributes();
+}
 

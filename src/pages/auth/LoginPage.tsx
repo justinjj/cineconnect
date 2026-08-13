@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Button, Container, Paper, Stack, TextField, Typography } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 
-import { loginUser } from "../../services/auth/authService";
+import { getCurrentUserAttributes, loginUser } from "../../services/auth/authService";
 
 
 export default function LoginPage() {
