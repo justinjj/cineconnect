@@ -1,6 +1,7 @@
 import { defineBackend } from '@aws-amplify/backend';
 import { auth } from './auth/resource';
 import { data } from './data/resource';
+import { storage } from "./storage/resource";
 import { searchActors } from "./functions/searchActors/resource";
 import { commonMovies } from "./functions/commonMovies/resource";
 import { trendingComparisons } from "./functions/trendingComparisons/resource";
@@ -14,6 +15,7 @@ import { TrendResources } from "./custom/trend/resource";
 const backend = defineBackend({
   auth,
   data,
+  storage,
   searchActors,
   commonMovies,
   trendingComparisons,

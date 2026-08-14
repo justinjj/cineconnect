@@ -1,7 +1,10 @@
 import { useEffect, useState } from "react";
 
-import { getOrCreateMyProfile } from "../services/api/userApi";
 import { getCurrentUserAttributes } from "../services/auth/authService";
+
+import {
+  getOrCreateMyProfile,
+} from "../services/api/userApi";
 
 type UserProfile = {
   id: string;
@@ -10,25 +13,16 @@ type UserProfile = {
   owner?: string | null;
 };
 
-export function useUserProfile(
-  isAuthenticated: boolean,
-) {
+export function useUserProfile() {
   const [profile, setProfile] = useState<UserProfile | null>(null);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    if (!isAuthenticated) {
-      return;
-    }
-
     let cancelled = false;
 
     const loadProfile = async () => {
       try {
-        setLoading(true);
-
-        const attributes = 
-          await getCurrentUserAttributes();
+        const attributes = await getCurrentUserAttributes();
 
         const result = await getOrCreateMyProfile(
           attributes.name ?? "",
@@ -37,6 +31,7 @@ export function useUserProfile(
 
         if (!cancelled) {
           setProfile(result);
+          setLoading(false);
         }
       } catch (error) {
         if (!cancelled) {
@@ -44,9 +39,8 @@ export function useUserProfile(
             "Failed to load user profile:",
             error
           );
-        }
-      } finally {
-        if (!cancelled) {
+
+          setProfile(null);
           setLoading(false);
         }
       }
@@ -57,7 +51,7 @@ export function useUserProfile(
     return () => {
       cancelled = true;
     };
-  }, [isAuthenticated]);
+  }, []);
 
   return {
     profile,

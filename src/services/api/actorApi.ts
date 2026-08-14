@@ -18,7 +18,10 @@ export async function searchActors(query: string): Promise<Actor[]> {
       id: number;
       name: string;
       image?: string | null;
-    } => actor.id !== undefined && actor.name !== undefined
+    } => 
+      actor != null &&
+      actor.id !== undefined &&
+      actor.name !== undefined
   );
 
   const result = actors.map((actor) => ({

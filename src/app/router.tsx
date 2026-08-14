@@ -3,6 +3,8 @@ import RootLayout from "./layouts/RootLayout";
 import HomePage from "../pages/home/HomePage";
 import SignUpPage from "../pages/auth/SignUpPage";
 import LoginPage from "../pages/auth/LoginPage";
+import ProfilePage from "../pages/profile/ProfilePage";
+import ProtectedRoute from "../components/auth/ProtectedRoute";
 
 export const router = createBrowserRouter([
   {
@@ -19,6 +21,15 @@ export const router = createBrowserRouter([
       {
         path: "/login",
         element: <LoginPage />
+      },
+      {
+        element: <ProtectedRoute />,
+        children: [
+          {
+            path: "/profile",
+            element: <ProfilePage />
+          }
+        ]
       }
     ],
   },
