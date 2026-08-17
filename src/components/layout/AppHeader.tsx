@@ -1,9 +1,7 @@
 import {
   AppBar,
-  Avatar,
   Box,
   Container,
-  IconButton,
   Link,
   List,
   ListItem,
@@ -15,7 +13,7 @@ import { Link as RouterLink, useNavigate } from "react-router-dom";
 import { useAuth } from "../../hooks/useAuth";
 
 export default function AppHeader() {
-  const { user, isAuthenticated, logout } = useAuth();
+  const { isAuthenticated, logout } = useAuth();
   const navigate = useNavigate();
 
   const handleLogout = async () => {
