@@ -1,18 +1,22 @@
+"use client";
+
 import { useEffect, useState } from "react";
 
 import {
   getProfilePictureUrl,
   uploadProfilePicture,
-} from "../services/storage/profileStorage";
+} from "@/services/storage/profileStorage";
 
 export function useProfilePicture() {
-  const [imageUrl, setImageUrl] = useState<string | null>(null);
+  const [imageUrl, setImageUrl] =
+    useState<string | null>(null);
+
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     let cancelled = false;
 
-    const load = async () => {
+    async function loadPicture() {
       try {
         const url = await getProfilePictureUrl();
 
@@ -20,12 +24,12 @@ export function useProfilePicture() {
           setImageUrl(url);
         }
       } catch (error) {
-        if (!cancelled) {
-          console.error(
-            "Failed to load profile picture:",
-            error
-          );
+        console.error(
+          "Failed to load profile picture:",
+          error
+        );
 
+        if (!cancelled) {
           setImageUrl(null);
         }
       } finally {
@@ -33,9 +37,9 @@ export function useProfilePicture() {
           setLoading(false);
         }
       }
-    };
+    }
 
-    load();
+    loadPicture();
 
     return () => {
       cancelled = true;
@@ -43,9 +47,9 @@ export function useProfilePicture() {
   }, []);
 
   const upload = async (file: File) => {
-    try {
-      setLoading(true);
+    setLoading(true);
 
+    try {
       await uploadProfilePicture(file);
 
       const url = await getProfilePictureUrl();
@@ -56,6 +60,8 @@ export function useProfilePicture() {
         "Failed to upload profile picture:",
         error
       );
+
+      throw error;
     } finally {
       setLoading(false);
     }

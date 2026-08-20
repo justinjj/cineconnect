@@ -1,6 +1,10 @@
+"use client";
+
 import { useEffect, useState } from "react";
 
-import { getCurrentUserAttributes } from "../services/auth/authService";
+import {
+  getCurrentUserAttributes,
+} from "../services/auth/authService";
 
 import {
   getOrCreateMyProfile,
@@ -8,39 +12,47 @@ import {
 
 type UserProfile = {
   id: string;
-  name?: string | null;
-  email?: string | null;
-  owner?: string | null;
+  name: string | null;
+  email: string | null;
 };
 
 export function useUserProfile() {
-  const [profile, setProfile] = useState<UserProfile | null>(null);
-  const [loading, setLoading] = useState(true);
+  const [profile, setProfile] =
+    useState<UserProfile | null>(null);
+
+  const [loading, setLoading] =
+    useState(true);
 
   useEffect(() => {
     let cancelled = false;
 
     const loadProfile = async () => {
       try {
-        const attributes = await getCurrentUserAttributes();
+        const attributes =
+          await getCurrentUserAttributes();
 
-        const result = await getOrCreateMyProfile(
-          attributes.name ?? "",
-          attributes.email ?? ""
-        );
+        const name =
+          attributes.name ?? "";
+
+        const email =
+          attributes.email ?? "";
+
+        const result =
+          await getOrCreateMyProfile(
+            name,
+            email
+          );
 
         if (!cancelled) {
           setProfile(result);
-          setLoading(false);
         }
       } catch (error) {
+        console.error(
+          "Failed to load user profile:",
+          error
+        );
+      } finally {
         if (!cancelled) {
-          console.error(
-            "Failed to load user profile:",
-            error
-          );
-
-          setProfile(null);
           setLoading(false);
         }
       }

@@ -11,15 +11,10 @@ export async function getOrCreateMyProfile(
   }
 
   const { data, errors } =
-    await client.models.UserProfile.create(
-      {
-        name,
-        email,
-      },
-      {
-        authMode: "userPool",
-      }
-    );
+    await client.models.UserProfile.create({
+      name,
+      email,
+    });
 
   if (errors?.length) {
     throw new Error(errors[0].message);
@@ -29,14 +24,12 @@ export async function getOrCreateMyProfile(
 }
 
 export async function getMyProfile() {
-  const { data, errors } = 
-    await client.models.UserProfile.list({
-      authMode: "userPool",
-    });
+  const { data, errors } =
+    await client.models.UserProfile.list({});
 
-    if(errors?.length) {
-      throw new Error(errors[0].message);
-    }
+  if (errors?.length) {
+    throw new Error(errors[0].message);
+  }
 
-    return data;
+  return data;
 }

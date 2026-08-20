@@ -1,24 +1,22 @@
-import { uploadData, getUrl } from "aws-amplify/storage";
-
-const PROFILE_KEY = "profile.png";
+import { getUrl, uploadData } from "aws-amplify/storage";
 
 export async function uploadProfilePicture(file: File) {
-  const result = await uploadData({
+  const key = "profile.png";
+
+  return uploadData({
     path: ({ identityId }) =>
-      `private/${identityId}/${PROFILE_KEY}`,
+      `private/${identityId}/${key}`,
     data: file,
     options: {
       contentType: file.type,
     },
   }).result;
-
-  return result;
 }
 
 export async function getProfilePictureUrl() {
   const result = await getUrl({
     path: ({ identityId }) =>
-      `private/${identityId}/${PROFILE_KEY}`,
+      `private/${identityId}/profile.png`,
   });
 
   return result.url.toString();

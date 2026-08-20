@@ -2,7 +2,7 @@ import ReactGA from "react-ga4";
 
 class AnalyticsService {
   initialize() {
-    const measurementId = import.meta.env.VITE_GA_MEASUREMENT_ID;
+    const measurementId = process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID;
 
     if (!measurementId) {
       console.warn("Google Analytics Measurement ID not found.");

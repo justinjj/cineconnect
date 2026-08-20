@@ -1,12 +1,11 @@
-import {
-  getCurrentUser,
-  signOut,
-} from "aws-amplify/auth";
 import { Hub } from "aws-amplify/utils";
-
 import { useEffect, useState } from "react";
-
 import type { AuthUser } from "aws-amplify/auth";
+
+import {
+  getCurrentAuthenticatedUser,
+  logout as logoutUser,
+} from "../services/auth/authService";
 
 export function useAuth() {
   const [user, setUser] = useState<AuthUser | null>(null);
@@ -15,15 +14,16 @@ export function useAuth() {
   useEffect(() => {
     const loadUser = async () => {
       try {
-        const currentUser = await getCurrentUser();
+        const currentUser =
+          await getCurrentAuthenticatedUser();
 
         setUser(currentUser);
       } catch {
-        setUser(null)
+        setUser(null);
       } finally {
         setLoading(false);
       }
-    }
+    };
 
     loadUser();
 
@@ -36,7 +36,7 @@ export function useAuth() {
         case "signedOut":
           setUser(null);
           break;
-          
+
         case "tokenRefresh":
           loadUser();
           break;
@@ -44,10 +44,10 @@ export function useAuth() {
     });
 
     return unsubscribe;
-  }, [])
+  }, []);
 
   const logout = async () => {
-    await signOut();
+    await logoutUser();
   };
 
   return {

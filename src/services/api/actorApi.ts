@@ -1,9 +1,9 @@
-import { client } from "./client";
-import { analytics } from "../../analytics/analyticsService";
-import type { Actor } from "../../features/actor-search/types";
+import { publicClient } from "./publicClient";
+import { analytics } from "@/services/analytics/analyticsService";
+import type { Actor } from "@/types/actor";
 
 export async function searchActors(query: string): Promise<Actor[]> {
-  const { data, errors } = await client.queries.searchActors({
+  const { data, errors } = await publicClient.queries.searchActors({
     query,
   });
 
@@ -33,4 +33,24 @@ export async function searchActors(query: string): Promise<Actor[]> {
   analytics.trackActorSearch(query, result.length);
 
   return result;
+}
+
+export async function resolveActorBySlug(
+  slug: string
+): Promise<Actor | null> {
+  const actors = await searchActors(slug);
+
+  const normalizedSlug = slug
+    .trim()
+    .toLowerCase()
+    .replace(/\s+/g, "-");
+
+  const exactMatch = actors.find((actor) =>
+    actor.name
+      .trim()
+      .toLowerCase()
+      .replace(/\s+/g, "-") === normalizedSlug
+  );
+
+  return exactMatch ?? null;
 }
