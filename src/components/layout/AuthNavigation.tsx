@@ -64,7 +64,9 @@ console.log("Auth state:", {
             </Link>
           </ListItem>
 
-          <ListItem component="li" disablePadding>
+          <ListItem 
+            component="li" 
+            disablePadding>
             <button
               type="button"
               onClick={handleLogout}
@@ -96,13 +98,17 @@ console.log("Auth state:", {
             </Link>
           </ListItem>
 
-          <ListItem component="li" disablePadding>
+          <ListItem 
+            component="li"
+            disablePadding
+            >
             <Link
               href="/signup"
               style={{
                 color: "inherit",
                 textDecoration: "none",
                 padding: "8px 12px",
+                whiteSpace: "nowrap"
               }}
             >
               Sign Up

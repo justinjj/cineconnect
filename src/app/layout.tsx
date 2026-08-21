@@ -1,8 +1,12 @@
 import type { Metadata } from "next";
-import { AppRouterCacheProvider } from "@mui/material-nextjs/v13-appRouter";
+
+import "@fontsource/roboto/400.css";
+import "@fontsource/roboto/500.css";
+import "@fontsource/roboto/700.css";
 
 import AppHeader from "../components/layout/AppHeader";
 import ConfigureAmplifyClientSide from "../components/ConfigureAmplifyClientSide";
+import Providers from "./providers";
 
 export const metadata: Metadata = {
   title: "CineConnect",
@@ -17,13 +21,12 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        <AppRouterCacheProvider>
+        <Providers>
           <ConfigureAmplifyClientSide />
-          
           <AppHeader />
           {children}
-        </AppRouterCacheProvider>
+        </Providers>
       </body>
     </html>
-  )
+  );
 }
