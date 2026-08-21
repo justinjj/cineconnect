@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 
 import {
   Autocomplete,
+  Avatar,
   TextField,
 } from "@mui/material";
 
@@ -70,19 +71,32 @@ export default function ActorSearch({
 
   return (
     <Autocomplete
-      options={visibleOptions}
+      options={options}
       value={value}
       getOptionLabel={(option) => option.name}
       getOptionKey={(option) => option.id}
-      isOptionEqualToValue={(option, selected) =>
-        option.id === selected.id
-      }
       loading={loading}
-      onInputChange={(_, inputValue) => {
-        setQuery(inputValue);
-      }}
-      onChange={(_, actor) => {
-        onChange(actor);
+      onInputChange={(_, value) => setQuery(value)}
+      onChange={(_, actor) => onChange(actor)}
+      renderOption={(props, actor) => { 
+        const { key, ...otherProps} = props;
+        return (
+          <li key={key} {...otherProps}>
+            <Avatar
+              src={actor.profileImage ?? undefined}
+              alt={actor.name}
+              sx={{
+                width: 40,
+                height: 40,
+                mr: 1.5,
+              }}
+            >
+              {actor.name.charAt(0)}
+            </Avatar>
+
+            {actor.name}
+          </li>
+        )
       }}
       renderInput={(params) => (
         <TextField

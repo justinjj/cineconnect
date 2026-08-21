@@ -12,7 +12,7 @@ export const handler: Schema["searchActors"]["functionHandler"] = async (
 ) => {
 
   const query = event.arguments.query;
-  const cacheKey = CacheKeys.actorSearch(query);
+  const cacheKey = `v2:${CacheKeys.actorSearch(query)}`;
   const cachedActors = await cache.get<ActorSummary[]>(cacheKey);
 
   if (cachedActors) {

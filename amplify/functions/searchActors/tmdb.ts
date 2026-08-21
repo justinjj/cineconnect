@@ -32,7 +32,7 @@ export async function searchActors(
   return data.results.map(actor => ({
     id: actor.id,
     name: actor.name,
-    profileImage: actor.profile_path
+    image: actor.profile_path
       ? `https://image.tmdb.org/t/p/w185${actor.profile_path}`
       : null,
   }));
