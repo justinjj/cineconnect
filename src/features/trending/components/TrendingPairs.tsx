@@ -1,8 +1,8 @@
 import LocalFireDepartmentIcon from "@mui/icons-material/LocalFireDepartment";
 import { Chip, Stack, Typography } from "@mui/material";
 
-import { useTrendingComparisons } from "../hooks/useTrendingComparisons";
-import type { ComparisonTrend } from "../types";
+import { useTrendingComparisons } from "../../../hooks/useTrendingComparisons";
+import type { ComparisonTrend } from "../../../types/trending";
 
 interface TrendingPairsProps {
   onSelect: (trend: ComparisonTrend) => void;

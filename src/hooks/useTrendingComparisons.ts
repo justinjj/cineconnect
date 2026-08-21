@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import { getTrendingComparisons } from "../../../services/api/trendApi";
-import type { ComparisonTrend } from "../types";
+import { getTrendingComparisons } from "@/services/api/trendingApi";
+import type { ComparisonTrend } from "@/types/trending";
 
 export function useTrendingComparisons(limit = 10) {
   const [trends, setTrends] = useState<ComparisonTrend[]>([]);

@@ -1,4 +1,4 @@
-import type { Actor } from "../actor-search/types";
+import type { Actor } from "../features/actor-search/types";
 
 export interface ComparisonTrend {
   comparisonKey: string;

@@ -1,12 +1,13 @@
 import { client } from "./client";
-import type { ComparisonTrend } from "../../features/trending/types";
+import type { ComparisonTrend } from "../../types/trending";
 
 export async function getTrendingComparisons(
   limit = 10
 ): Promise<ComparisonTrend[]> {
-  const { data, errors } = await client.queries.trendingComparisons({
-    limit,
-  });
+  const { data, errors } =
+    await client.queries.trendingComparisons({
+      limit,
+    });
 
   if (errors?.length) {
     throw new Error(errors[0].message);
@@ -15,7 +16,8 @@ export async function getTrendingComparisons(
   const trends = (data ?? []).filter(
     (
       trend
-    ): trend is NonNullable<typeof trend> => trend != null
+    ): trend is NonNullable<typeof trend> =>
+      trend != null
   );
 
   return trends.map((trend) => ({
@@ -26,7 +28,8 @@ export async function getTrendingComparisons(
       .filter(
         (
           actor
-        ): actor is NonNullable<typeof actor> => actor != null
+        ): actor is NonNullable<typeof actor> =>
+          actor != null
       )
       .map((actor) => ({
         id: actor.id,
