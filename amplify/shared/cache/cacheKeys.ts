@@ -8,4 +8,10 @@ export class CacheKeys {
 
     return `common-movies:${sortedIds.join("-")}`;
   }
+
+  static recommendedComparisons(actorIds: number[]): string {
+    const sortedIds = [...actorIds].sort((a, b) => a - b);
+
+    return `v2:recommended-comparisons:${sortedIds.join("-")}`;
+  }
 }

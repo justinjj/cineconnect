@@ -5,6 +5,7 @@ import { storage } from "./storage/resource";
 import { searchActors } from "./functions/searchActors/resource";
 import { commonMovies } from "./functions/commonMovies/resource";
 import { trendingComparisons } from "./functions/trendingComparisons/resource";
+import { recommendedComparisons } from "./functions/recommendedComparisons/resource";
 import { CacheResources } from "./custom/cache/resource";
 import { TrendResources } from "./custom/trend/resource";
 
@@ -19,6 +20,7 @@ const backend = defineBackend({
   searchActors,
   commonMovies,
   trendingComparisons,
+  recommendedComparisons,
 });
 
 const cache = new CacheResources(
@@ -28,6 +30,9 @@ const cache = new CacheResources(
 
 cache.table.grantReadWriteData(backend.searchActors.resources.lambda);
 cache.table.grantReadWriteData(backend.commonMovies.resources.lambda);
+cache.table.grantReadWriteData(
+  backend.recommendedComparisons.resources.lambda
+);
 
 backend.searchActors.addEnvironment(
   "CACHE_TABLE_NAME",
@@ -35,6 +40,11 @@ backend.searchActors.addEnvironment(
 );
 
 backend.commonMovies.addEnvironment(
+  "CACHE_TABLE_NAME",
+  cache.table.tableName
+);
+
+backend.recommendedComparisons.addEnvironment(
   "CACHE_TABLE_NAME",
   cache.table.tableName
 );

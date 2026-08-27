@@ -7,9 +7,9 @@ interface MovieCreditsResponse {
 }
 
 export async function getMoviesForActor(actorId: number) {
-  console.log("TMDB key exists:", !!env.TMDB_API_KEY);
-  console.log("TMDB key length:", env.TMDB_API_KEY?.length);
-  console.log("TMDB key prefix:", env.TMDB_API_KEY?.substring(0, 5));
+  // console.log("TMDB key exists:", !!env.TMDB_API_KEY);
+  // console.log("TMDB key length:", env.TMDB_API_KEY?.length);
+  // console.log("TMDB key prefix:", env.TMDB_API_KEY?.substring(0, 5));
   const response = await fetch(
     `https://api.themoviedb.org/3/person/${actorId}/movie_credits?api_key=${env.TMDB_API_KEY}`
   );
@@ -30,4 +30,24 @@ export async function getMoviesForActors(actorIds: number[]) {
   return Promise.all(
     actorIds.map(getMoviesForActor)
   );
+}
+
+export async function getMovieCredits(movieId: number) {
+  const response = await fetch(
+    `https://api.themoviedb.org/3/movie/${movieId}/credits?api_key=${env.TMDB_API_KEY}`
+  );
+
+  if (!response.ok) {
+    throw new Error(`TMDB returned ${response.status}`);
+  }
+
+  const data = (await response.json()) as {
+    cast: Array<{
+      id: number;
+      name: string;
+      profile_path: string | null;
+    }>;
+  };
+
+  return data.cast;
 }
