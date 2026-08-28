@@ -8,6 +8,7 @@ import {
   Typography,
 } from "@mui/material";
 import { notFound } from "next/navigation";
+import type { Metadata } from "next";
 
 import {
   resolveActorBySlug,
@@ -17,7 +18,12 @@ import {
   getCommonMoviesServer,
 } from "@/services/api/serverCommonMoviesApi";
 
-import type { Metadata } from "next";
+import {
+  getRecommendedComparisonsServer,
+} from "@/services/api/serverRecommendedComparisonsApi";
+
+import ExploreMoreConnections from "@/components/comparison/ExploreMoreConnections";
+
 
 export async function generateMetaData({
   params,
@@ -113,21 +119,34 @@ export default async function ComparisonPage({
     notFound();
   }
 
-  const movies = await getCommonMoviesServer(
-    [firstActor.id, secondActor.id],
-    [
-      {
-        id: firstActor.id,
-        name: firstActor.name,
-        image: firstActor.profileImage,
-      },
-      {
-        id: secondActor.id,
-        name: secondActor.name,
-        image: secondActor.profileImage,
-      },
-    ]
-  );
+  const actors = [
+    {
+      id: firstActor.id,
+      name: firstActor.name,
+      profileImage: firstActor.profileImage,
+    },
+    {
+      id: secondActor.id,
+      name: secondActor.name,
+      profileImage: secondActor.profileImage,
+    },
+  ];
+
+  const [movies, recommendations] = await Promise.all([
+    getCommonMoviesServer(
+      [firstActor.id, secondActor.id],
+      actors.map((actor) => ({
+        id: actor.id,
+        name: actor.name,
+        image: actor.profileImage,
+      }))
+    ),
+
+    getRecommendedComparisonsServer(
+      [firstActor.id, secondActor.id],
+      actors
+    ),
+  ]);
 
   return (
     <main>
@@ -208,6 +227,10 @@ export default async function ComparisonPage({
               </Grid>
             ))}
           </Grid>
+
+          <ExploreMoreConnections
+            recommendations={recommendations}
+          />
         </Box>
       </Container>
     </main>
