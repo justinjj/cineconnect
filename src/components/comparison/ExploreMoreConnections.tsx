@@ -1,12 +1,18 @@
+"use client";
+
 import {
+  Avatar,
   Box,
+  Button,
   Card,
   CardContent,
   CardMedia,
   Grid,
   Typography,
 } from "@mui/material";
-import Link from "next/link";
+
+import { useComparison } from "@/app/context/ComparisonContext";
+import type { Actor } from "@/types/actor";
 
 type RecommendationActor = {
   id: number;
@@ -27,6 +33,29 @@ type ExploreMoreConnectionsProps = {
 export default function ExploreMoreConnections({
   recommendations,
 }: ExploreMoreConnectionsProps) {
+  const {
+    selectedActors,
+    addActor,
+  } = useComparison();
+
+  const isSelected = (actorId: number) =>
+    selectedActors.some(
+      (actor: Actor) => actor.id === actorId
+    );
+
+  const canAddActor =
+    selectedActors.length < 2;
+
+  const handleAddActor = (
+    actor: RecommendationActor
+  ) => {
+    addActor({
+      id: actor.id,
+      name: actor.name,
+      profileImage: actor.image ?? null,
+    });
+  };
+
   if (recommendations.length === 0) {
     return null;
   }
@@ -54,8 +83,10 @@ export default function ExploreMoreConnections({
 
       <Grid container spacing={3}>
         {recommendations.map((recommendation) => {
-          const [firstActor, secondActor] =
-            recommendation.actors;
+          const [
+            firstActor,
+            secondActor,
+          ] = recommendation.actors;
 
           if (!firstActor || !secondActor) {
             return null;
@@ -70,31 +101,31 @@ export default function ExploreMoreConnections({
                 md: 4,
               }}
             >
-              <Link
-                href={`/${recommendation.comparisonKey}`}
-                style={{
-                  textDecoration: "none",
-                  color: "inherit",
-                  display: "block",
+              <Card
+                sx={{
                   height: "100%",
+                  transition:
+                    "transform 0.2s ease",
+                  "&:hover": {
+                    transform:
+                      "translateY(-4px)",
+                  },
                 }}
               >
-                <Card
+                <Box
                   sx={{
-                    height: "100%",
-                    transition: "transform 0.2s ease",
-                    "&:hover": {
-                      transform: "translateY(-4px)",
-                    },
+                    display: "flex",
+                    justifyContent: "center",
+                    gap: 4,
+                    p: 3,
                   }}
                 >
+                  {/* First actor */}
                   <Box
                     sx={{
                       display: "flex",
+                      flexDirection: "column",
                       alignItems: "center",
-                      justifyContent: "center",
-                      gap: 1.5,
-                      p: 3,
                     }}
                   >
                     {firstActor.image ? (
@@ -110,24 +141,70 @@ export default function ExploreMoreConnections({
                         }}
                       />
                     ) : (
-                      <Box
+                      <Avatar
                         sx={{
                           width: 90,
                           height: 90,
-                          borderRadius: "50%",
-                          bgcolor: "action.hover",
                         }}
-                      />
+                      >
+                        {firstActor.name.charAt(0)}
+                      </Avatar>
                     )}
 
                     <Typography
+                      variant="body2"
+                      sx={{
+                        fontWeight: 600,
+                        mt: 1,
+                        textAlign: "center",
+                      }}
+                    >
+                      {firstActor.name}
+                    </Typography>
+
+                    <Button
+                      size="small"
+                      onClick={() =>
+                        handleAddActor(firstActor)
+                      }
+                      disabled={
+                        !canAddActor &&
+                        !isSelected(
+                          firstActor.id
+                        )
+                      }
+                    >
+                      {isSelected(firstActor.id)
+                        ? "✓ Added"
+                        : "+ Add"}
+                    </Button>
+                  </Box>
+
+                  {/* X */}
+                  <Box
+                    sx={{
+                      display: "flex",
+                      alignItems: "center",
+                    }}
+                  >
+                    <Typography
                       variant="h5"
-                      component="span"
-                      sx={{ fontWeight: 700 }}
+                      sx={{
+                        fontWeight: 700,
+                      }}
                     >
                       ×
                     </Typography>
+                  </Box>
 
+                  {/* Second actor */}
+                  <Box
+                    sx={{
+                      display: "flex",
+                      flexDirection: "column",
+                      alignItems: "center",
+                    }}
+                  >
                     {secondActor.image ? (
                       <CardMedia
                         component="img"
@@ -141,41 +218,78 @@ export default function ExploreMoreConnections({
                         }}
                       />
                     ) : (
-                      <Box
+                      <Avatar
                         sx={{
                           width: 90,
                           height: 90,
-                          borderRadius: "50%",
-                          bgcolor: "action.hover",
                         }}
-                      />
+                      >
+                        {secondActor.name.charAt(0)}
+                      </Avatar>
                     )}
-                  </Box>
-
-                  <CardContent sx={{ textAlign: "center" }}>
-                    <Typography
-                      variant="h6"
-                      sx={{ fontWeight: 600 }}
-                    >
-                      {firstActor.name} × {secondActor.name}
-                    </Typography>
 
                     <Typography
                       variant="body2"
-                      color="text.secondary"
-                      sx={{ mt: 1 }}
+                      sx={{
+                        fontWeight: 600,
+                        mt: 1,
+                        textAlign: "center",
+                      }}
                     >
-                      Worked together in{" "}
-                      <strong>
-                        {recommendation.sharedMovieCount}
-                      </strong>{" "}
-                      {recommendation.sharedMovieCount === 1
-                        ? "movie"
-                        : "movies"}
+                      {secondActor.name}
                     </Typography>
-                  </CardContent>
-                </Card>
-              </Link>
+
+                    <Button
+                      size="small"
+                      onClick={() =>
+                        handleAddActor(secondActor)
+                      }
+                      disabled={
+                        !canAddActor &&
+                        !isSelected(
+                          secondActor.id
+                        )
+                      }
+                    >
+                      {isSelected(secondActor.id)
+                        ? "✓ Added"
+                        : "+ Add"}
+                    </Button>
+                  </Box>
+                </Box>
+
+                <CardContent
+                  sx={{
+                    textAlign: "center",
+                    pt: 0,
+                  }}
+                >
+                  <Typography
+                    variant="body2"
+                    color="text.secondary"
+                    sx={{ mb: 2 }}
+                  >
+                    Worked together in{" "}
+                    <strong>
+                      {
+                        recommendation.sharedMovieCount
+                      }
+                    </strong>{" "}
+                    {recommendation.sharedMovieCount ===
+                    1
+                      ? "movie"
+                      : "movies"}
+                  </Typography>
+
+                  <Button
+                    href={`/${recommendation.comparisonKey}`}
+                    variant="contained"
+                    size="small"
+                  >
+                    Explore
+                  </Button>
+                </CardContent>
+              </Card>
             </Grid>
           );
         })}
