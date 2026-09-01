@@ -23,6 +23,7 @@ import {
 } from "@/services/api/serverRecommendedComparisonsApi";
 
 import ExploreMoreConnections from "@/components/comparison/ExploreMoreConnections";
+import MovieCard from "@/components/movie/MovieCard";
 
 
 export async function generateMetaData({
@@ -191,39 +192,7 @@ export default async function ComparisonPage({
                   lg: 3,
                 }}
               >
-                <Card>
-                  {movie.posterImage && (
-                    <CardMedia
-                      component="img"
-                      height="360"
-                      image={movie.posterImage}
-                      alt={movie.title}
-                    />
-                  )}
-
-                  <CardContent>
-                    <Typography
-                      variant="h6"
-                      sx={{
-                        fontWeight:600
-                      }}
-                    >
-                      {movie.title}
-                    </Typography>
-
-                    {movie.releaseDate && (
-                      <Typography
-                        variant="body2"
-                        color="text.secondary"
-                        sx={{ mt: 1 }}
-                      >
-                        {new Date(
-                          movie.releaseDate
-                        ).getFullYear()}
-                      </Typography>
-                    )}
-                  </CardContent>
-                </Card>
+                <MovieCard movie={movie} />
               </Grid>
             ))}
           </Grid>

@@ -14,4 +14,8 @@ export class CacheKeys {
 
     return `v2:recommended-comparisons:${sortedIds.join("-")}`;
   }
+
+  static movieDetails(movieId: number): string {
+    return `movie-details:${movieId}`;
+  }
 }
