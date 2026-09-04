@@ -1,8 +1,8 @@
 "use client";
 
-import LocalFireDepartmentIcon from "@mui/icons-material/LocalFireDepartment";
 import {
-  Chip,
+  Avatar,
+  Box,
   Stack,
   Typography,
 } from "@mui/material";
@@ -53,13 +53,6 @@ export function TrendingPairs({
 
   return (
     <>
-      <Typography
-        variant="body2"
-        sx={{ mb: 1 }}
-      >
-        Trending pairs
-      </Typography>
-
       <Stack
         direction="row"
         useFlexGap
@@ -69,25 +62,57 @@ export function TrendingPairs({
         }}
       >
         {trends.map((trend) => {
-          if(trend.actors.length !== 2) {
+          if (trend.actors.length !== 2) {
             return null;
           }
 
           const [actor1, actor2] = trend.actors;
 
           return (
-            <Chip 
+            <Box
               key={trend.comparisonKey}
-              icon={
-                <LocalFireDepartmentIcon />
-              }
-              label={`${actor1.name} × ${actor2.name}`}
-              clickable
               onClick={() => onSelect(trend)}
-            />
+              sx={{
+                display: "flex",
+                alignItems: "center",
+                gap: 1,
+                px: 1,
+                py: 0.5,
+                borderRadius: 10,
+                backgroundColor: "grey.100",
+                cursor: "pointer",
+              }}
+            >
+              <Avatar
+                src={actor1.profileImage ?? undefined}
+                alt={actor1.name}
+                sx={{
+                  width: 28,
+                  height: 28,
+                }}
+              />
+
+              <Typography
+                variant="body2"
+                sx={{
+                  whiteSpace: "nowrap",
+                }}
+              >
+                {actor1.name} × {actor2.name}
+              </Typography>
+
+              <Avatar
+                src={actor2.profileImage ?? undefined}
+                alt={actor2.name}
+                sx={{
+                  width: 28,
+                  height: 28,
+                }}
+              />
+            </Box>
           );
         })}
       </Stack>
     </>
-  )
+  );
 }

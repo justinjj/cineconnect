@@ -12,10 +12,11 @@ import {
 } from "@mui/material";
 
 import ActorSearch from "@/components/actors/ActorSearch";
-import { TrendingPairs } from "@/components/trending/TrendingPairs";
 
 import type { Actor } from "@/types/actor";
 import type { ComparisonTrend } from "@/types/trending";
+import { ComparisonTabs } from "@/components/comparison-tabs/ComparisonTabs";
+import { RecentComparison } from "@/types/recentComparison";
 
 function createActorSlug(name: string) {
   return name
@@ -60,6 +61,28 @@ export default function HomePage() {
       )
     );
   };
+
+  const handleRecentSelect = (
+    comparison: RecentComparison
+  ) => {
+    handleTrendingSelect({
+      comparisonKey: comparison.comparisonKey,
+      searchCount: 0,
+      lastSearched: comparison.searchedAt,
+      actors: [
+        {
+          id: comparison.firstActorId,
+          name: comparison.firstActorName,
+          profileImage: comparison.firstActorImage ?? null,
+        },
+        {
+          id: comparison.secondActorId,
+          name: comparison.secondActorName,
+          profileImage: comparison.secondActorImage ?? null,
+        },
+      ],
+    });
+  };  
 
   const handleTrendingSelect = (
     trend: ComparisonTrend
@@ -126,11 +149,11 @@ export default function HomePage() {
           </Button>
         </Stack>
 
-        <Box sx={{ mt: 6 }}>
-          <TrendingPairs
-            onSelect={handleTrendingSelect}
-          />
-        </Box>
+        <ComparisonTabs
+          onTrendingSelect={handleTrendingSelect}
+          onRecentSelect={handleRecentSelect}
+        />
+
       </Box>
     </Container>
   );

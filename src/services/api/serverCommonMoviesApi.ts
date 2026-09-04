@@ -1,4 +1,4 @@
-import { serverClient } from "./serverClient";
+import { authenticatedServerClient } from "./authenticatedServerClient";
 import type { Movie } from "@/types/movie";
 
 export async function getCommonMoviesServer(
@@ -10,7 +10,7 @@ export async function getCommonMoviesServer(
   }[]
 ): Promise<Movie[]> {
   const { data, errors } =
-    await serverClient.queries.commonMovies({
+    await authenticatedServerClient.queries.commonMovies({
       actorIds,
       actors,
     });

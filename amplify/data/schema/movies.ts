@@ -44,6 +44,7 @@ export const movieSchema = {
     .returns(a.ref("Movie").array())
     .authorization((allow) => [
       allow.publicApiKey(),
+      allow.authenticated(),
     ])
     .handler(a.handler.function(commonMovies)),
 

@@ -3,13 +3,21 @@ import { actorSchema } from "./schema/actor";
 import { movieSchema } from "./schema/movies";
 import { trendingSchema } from "./schema/trending";
 import { userSchema } from "./schema/user";
+import { commonMovies } from "../functions/commonMovies/resource";
+import { recentComparisonSchema } from "./schema/recentComparisons";
+import { recentComparisonsFunction } from "../functions/recentComparisons/resource";
 
 const schema = a.schema({
   ...actorSchema,
   ...movieSchema,
   ...trendingSchema,
   ...userSchema,
-});
+  ...recentComparisonSchema,
+})
+.authorization((allow) => [
+  allow.resource(commonMovies),
+  allow.resource(recentComparisonsFunction),
+]);
 
 export type Schema = ClientSchema<typeof schema>;
 

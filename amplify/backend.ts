@@ -9,6 +9,7 @@ import { recommendedComparisons } from "./functions/recommendedComparisons/resou
 import { CacheResources } from "./custom/cache/resource";
 import { TrendResources } from "./custom/trend/resource";
 import { movieDetails } from "./functions/movieDetails/resource";
+import { recentComparisonsFunction } from "./functions/recentComparisons/resource";
 
 
 /**
@@ -23,6 +24,7 @@ const backend = defineBackend({
   trendingComparisons,
   recommendedComparisons,
   movieDetails,
+  recentComparisonsFunction,
 });
 
 const cache = new CacheResources(
