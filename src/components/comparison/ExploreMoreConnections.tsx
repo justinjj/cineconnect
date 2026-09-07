@@ -264,23 +264,6 @@ export default function ExploreMoreConnections({
                     pt: 0,
                   }}
                 >
-                  <Typography
-                    variant="body2"
-                    color="text.secondary"
-                    sx={{ mb: 2 }}
-                  >
-                    Worked together in{" "}
-                    <strong>
-                      {
-                        recommendation.sharedMovieCount
-                      }
-                    </strong>{" "}
-                    {recommendation.sharedMovieCount ===
-                    1
-                      ? "movie"
-                      : "movies"}
-                  </Typography>
-
                   <Button
                     href={`/${recommendation.comparisonKey}`}
                     variant="contained"
