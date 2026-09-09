@@ -124,6 +124,17 @@ export default function MovieDetailsDialog({
     });
   };
 
+    const uniqueCast = details && Array.from(
+      new Map(
+        details.cast
+          .filter(
+            (actor): actor is CastMember =>
+              actor != null
+          )
+          .map((actor) => [actor.id, actor])
+      ).values()
+    );  
+
   return (
     <Dialog
       open={open}
@@ -258,7 +269,7 @@ export default function MovieDetailsDialog({
                 gap: 2,
               }}
             >
-              {details.cast
+              {uniqueCast && uniqueCast
                 .filter(
                   (actor): actor is CastMember =>
                     actor != null
